@@ -1,0 +1,66 @@
+'use strict' //pegar erros e mostrar
+
+//criar um JSON e cada letra corresponde a uma musica
+const sons = {
+  'A': 'boom.wav',
+  'S': 'clap.wav',
+  'D': 'hihat.wav',
+  'F': 'kick.wav',
+  'G': 'openhat.wav',
+  'H': 'ride.wav',
+  'J': 'snare.wav',
+  'K': 'tink.wav',
+  'L': 'tom.wav'
+}
+
+
+// uma função que crie as divs com as letras
+const criarDiv = (texto) => { //recebe o texto que fica dentro da div e pode ser o identifiucador ou conteudo da div
+  const div = document.createElement('div')
+  div.classList.add('key') // nome da class da div
+  div.textContent = texto //conteudo do texto vai ser o texto que ele vai receber
+  div.id = texto // vai ser igual o texto pra nao se perder
+  document.getElementById('container').appendChild(div)//onde vai ser inserido
+}
+
+//criar função para exibis os sons na tela
+const exibir = (sons) => Object.keys(sons).forEach(criarDiv)
+//precisa pegar cada uma das letras de 'sons', pq se pegar o objeto sons, vai ter tudo 'a chave e o valor' e ele so quer as chaves(letras), para isso, pega o objeto.chaves e passa o objeto, assim ele retorna um array com todos as chaves, aí passa um ForEach, que varre todos os elementos desse array e passa o que vc quer no argumento, nesse caso é criar as divs
+
+
+const tocarSom = (letra) => { //função recebe a letra para emitir o som
+  const audio = new Audio(`./sound/${sons[letra]}`) //precisa receber o endereço do som
+  audio.play()
+}
+
+const adicionaeEfeito = (letra) => document.getElementById(letra)
+                                           .classList.toggle('active')
+
+
+const removerEfeito = (letra) => {
+  const div = document.getElementById(letra)
+  const removeActive = () => div.classList.remove('active')
+  div.addEventListener('transitionend', removeActive)
+}
+
+
+//eventos dos cliques para sair o som
+//como as divs estao sendo criados no JS, entao pega quem ta "abraçando as divs", que nesse caso é o container "pai"
+const ativarDiv = (evento) =>{
+  const letra = evento.type == 'click' ? evento.target.id : evento.key.toUpperCase()
+
+
+  const letraPermitida = sons.hasOwnProperty(letra)//variavel do tipo boleano (true/falso), então pega o som, que é o objeto e pergunta se tem essa propriedade "letra"
+  if (letraPermitida){
+    adicionaeEfeito(letra)
+    tocarSom(letra)//quando a letra for clicada, tem que tocar o som referente a letra
+    removerEfeito(letra)
+  }// fazendo uma validação para que clique apenas nas letras
+}
+
+
+exibir(sons)
+document.getElementById('container')
+        .addEventListener("click", ativarDiv) //ativa a div e da o efeito
+
+window.addEventListener('keydown', ativarDiv)

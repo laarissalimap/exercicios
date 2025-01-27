@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Estudar JS",
+    "status": "em andamento",
+    "createdAt": "2024-11-02T15:25:51.012Z"
+  },
+  {
+    "name": "Comprar pão",
+    "status": "concluída",
+    "createdAt": "2024-11-02T16:32:46.853Z"
+  }
+]
